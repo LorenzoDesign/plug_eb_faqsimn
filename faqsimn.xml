@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension version="3.9.0" type="plugin" group="eventbooking" method="upgrade">
-	<name>Events Booking - FAQS</name>
+	<name>Events Booking - FAQS - IMN</name>
 	<author>Lorenzo Giovannini</author>
-	<creationDate>Agosto 2023</creationDate>
+	<creationDate>Febbraio 2025</creationDate>
 	<copyright>Copyright 2010 - 2023 Istituto Medicina Naturalem</copyright>
 	<license>https://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
 	<authorEmail>lorenzo@istitutomedicinanaturale.it</authorEmail>
-	<authorUrl>https://joomdonation.com</authorUrl>
+	<authorUrl>https://www.istitutomedicinanaturale.it</authorUrl>
 	<version>4.4.5</version>
 	<description>
 		Questo plugin aggiunge e mostra delle FAQ nella pagina dell' evento
@@ -18,7 +18,7 @@
 	</install>
 
 	<files>
-		<filename plugin="faqs">faqs.php</filename>
+		<filename plugin="faqsimn">faqsimn.php</filename>
 		<folder>sql</folder>
 		<folder>form</folder>
 	</files>

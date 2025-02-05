@@ -21,12 +21,12 @@ class TableFaqs extends JTable
 {
 	public function __construct($db)
 	{
-		parent::__construct( '#__eb_faqs', 'id', $db );
+		parent::__construct( '#__eb_faqsimn', 'id', $db );
 	}
 }
 
 
-class plgEventBookingFaqs extends CMSPlugin
+class plgEventBookingFaqsimn extends CMSPlugin
 {
 	/**
 	 * Application object.
@@ -57,7 +57,7 @@ class plgEventBookingFaqs extends CMSPlugin
 		}
 
 		return [
-			'title' => Text::_('FAQ'),
+			'title' => Text::_('<i class="far fa-question-circle" style="color: #0049c7;"></i> FAQ'),
 			'form'  => $this->drawSettingForm($row),
 		];
 	}
@@ -88,7 +88,7 @@ class plgEventBookingFaqs extends CMSPlugin
 			return JTable::getInstance($type, $prefix, $config);
 		}		
 
-		//$test = JTable::getInstance('Faqs', 'Table', array());
+		$test = JTable::getInstance('Faqs', 'Table', array());
 
 		foreach ($faqs as $faq)
 		{
@@ -110,7 +110,7 @@ class plgEventBookingFaqs extends CMSPlugin
 
 		if (!$isNew)
 		{
-			$query->delete('#__eb_faqs')
+			$query->delete('#__eb_faqsimn')
 				->where('event_id = ' . $row->id);
 
 			if (count($faqIds))
@@ -122,7 +122,7 @@ class plgEventBookingFaqs extends CMSPlugin
 				->execute();
 
 			$query->clear()
-				->delete('#__eb_event_faqs')
+				->delete('#__eb_event_faqsimn')
 				->where('event_id = ' . $row->id);
 			$db->setQuery($query);
 			$db->execute();
@@ -135,7 +135,7 @@ class plgEventBookingFaqs extends CMSPlugin
 			if (count($faqIds))
 			{
 				$query->clear()
-					->insert('#__eb_event_faqs')
+					->insert('#__eb_event_faqsimn')
 					->columns($db->quoteName(['event_id', 'faq_id']));
 
 				foreach ($faqIds as $faqId)
@@ -149,7 +149,7 @@ class plgEventBookingFaqs extends CMSPlugin
 		}
 
 		// Insert event faqs into #__eb_event_faqs table
-		$sql = 'INSERT INTO #__eb_event_faqs(event_id, faq_id) SELECT event_id, id FROM #__eb_faqs WHERE event_id = ' . $row->id . ' ORDER BY ordering';
+		$sql = 'INSERT INTO #__eb_event_faqsimn(event_id, faq_id) SELECT event_id, id FROM #__eb_faqsimn WHERE event_id = ' . $row->id . ' ORDER BY ordering';
 		$db->setQuery($sql)
 			->execute();
 	}
@@ -164,7 +164,7 @@ class plgEventBookingFaqs extends CMSPlugin
 	private function drawSettingForm($row): string
 	{
 
-		$xml = simplexml_load_file(JPATH_ROOT . '/plugins/eventbooking/faqs/form/faq.xml');
+		$xml = simplexml_load_file(JPATH_ROOT . '/plugins/eventbooking/faqsimn/form/faq.xml');
 
 		if ($this->params->get('use_editor_for_description', 0))
 		{
@@ -178,7 +178,8 @@ class plgEventBookingFaqs extends CMSPlugin
 		}
 		$xml->field->attributes()->layout = $this->params->get('subform_layout', 'joomla.form.field.subform.repeatable-table');
 
-		$form             = Form::getInstance('faqs', $xml->asXML());
+		//$form 			= Factory::getContainer()->get(FormFactoryInterface::class)->createForm('faqsimn', $xml->asXML());
+		$form             = Form::getInstance('faqsimn', $xml->asXML());
 		$formData['faqs'] = [];
 		$selectedfaqIds   = [];
 
@@ -189,7 +190,7 @@ class plgEventBookingFaqs extends CMSPlugin
 		if ($row->id)
 		{
 			$query->select('*')
-				->from('#__eb_faqs')
+				->from('#__eb_faqsimn')
 				->where('event_id = ' . $row->id)
 				->order('ordering');
 			$db->setQuery($query);
@@ -205,7 +206,7 @@ class plgEventBookingFaqs extends CMSPlugin
 
 			$query->clear()
 				->select('faq_id')
-				->from('#__eb_event_faqs')
+				->from('#__eb_event_faqsimn')
 				->where('event_id = ' . (int) $row->id);
 			$db->setQuery($query);
 			$selectedfaqIds = $db->loadColumn();
@@ -214,7 +215,7 @@ class plgEventBookingFaqs extends CMSPlugin
 		// Get existing faqs for selection
 		$query->clear()
 			->select('id, domanda')
-			->from('#__eb_faqs')
+			->from('#__eb_faqsimn')
 			->order('ordering');
 
 		if ($row->id)
@@ -261,8 +262,8 @@ class plgEventBookingFaqs extends CMSPlugin
 		$db      = $this->db;
 		$query   = $db->getQuery(true)
 			->select('a.*')
-			->from('#__eb_faqs AS a')
-			->innerJoin('#__eb_event_faqs AS b ON a.id = b.faq_id')
+			->from('#__eb_faqsimn AS a')
+			->innerJoin('#__eb_event_faqsimn AS b ON a.id = b.faq_id')
 			->where('b.event_id = ' . $eventId);
 
 		$query->order('b.id');

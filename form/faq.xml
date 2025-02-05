@@ -23,10 +23,10 @@
 			/>
 			<field 
 				name="risposta" 
-				type="textarea" 
+				type="editor" 
 				label="Risposta" 
 				description="La risposta alla domanda"
-				width="300" 
+				width="100%" 
 				filter="safehtml" />
 		</form>
 	</field>
